@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--LotteryView-->
+    <declare-styleable name="LotteryView">
+        <!--箭头位置-->
+        <attr name="lv_arrow_pos" format="enum">
+            <enum name="top" value="1" />
+            <enum name="middle" value="0" />
+        </attr>
+
+        <!--箭头图片资源-->
+        <attr name="lv_arrow_res" format="reference" />
+
+        <!--固定外框资源-->
+        <attr name="lv_outside_frame_res" format="reference" />
+
+        <!--绘制类型-->
+        <attr name="lv_drawer_type" format="enum">
+            <!--全部一张图-->
+            <enum name="one_image" value="1" />
+            <!--扇形颜色-->
+            <enum name="colors" value="2" />
+            <!--背景图-->
+            <enum name="bg_image" value="3" />
+        </attr>
+
+        <!--背景图片资源-->
+        <attr name="lv_bg_res" format="reference" />
+
+        <!--item数量-->
+        <attr name="lv_item_size" format="integer" />
+
+        <!--名称textSize-->
+        <attr name="lv_name_textSize" format="dimension" />
+
+        <!--数量textSize-->
+        <attr name="lv_number_textSize" format="dimension" />
+
+        <!--名称textColor-->
+        <attr name="lv_name_textColor" format="color" />
+
+        <!--数量textColor-->
+        <attr name="lv_number_textColor" format="color" />
+
+        <!--图标宽度 单位dp-->
+        <attr name="lv_icon_width" format="dimension" />
+
+        <!--图标高度 单位dp-->
+        <attr name="lv_icon_height" format="dimension" />
+
+        <!--径向位置因子-->
+        <attr name="lv_name_factor" format="float" />
+        <attr name="lv_number_factor" format="float" />
+        <attr name="lv_icon_factor" format="float" />
+
+        <!--是否显示数量-->
+        <attr name="lv_show_number" format="boolean" />
+        <!--动画周期-->
+        <attr name="lv_duration" format="integer" />
+        <!--动画结束停留时长-->
+        <attr name="lv_stop_delay" format="integer" />
+        <!--动画初始圈数，默认转4圈以上-->
+        <attr name="lv_init_turn_count" format="integer" />
+    </declare-styleable>
+</resources>
