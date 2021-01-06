@@ -67,7 +67,7 @@ lotteryView.initWith(builder)
 
 ## Download
 
-**Attention:**This library is using kotlin to write,so make sure you are configure kotlin in your project.(How to configure kotlin with IDE; you can configure that **Tools** ==> **kotlin** ==>**configure kotlin in project** on Android Studio 4.0+)
+**Attention**:This library is using kotlin to write,so make sure you are configure kotlin in your project.(How to configure kotlin with IDE; you can configure that **Tools** ==> **kotlin** ==>**configure kotlin in project** on Android Studio 4.0+)
 
 ```groovy
 dependencies {
@@ -77,7 +77,7 @@ dependencies {
 
 
 
-##Attributies
+## Attributies
 
 | Name                | Value                       | Description                                                  |
 | ------------------- | --------------------------- | ------------------------------------------------------------ |
