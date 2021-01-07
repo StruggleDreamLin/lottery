@@ -3,6 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="lottery" target="1.7" />
+      <module name="LotteryDemo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

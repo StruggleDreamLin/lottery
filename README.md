@@ -71,7 +71,7 @@ lotteryView.initWith(builder)
 
 ```groovy
 dependencies {
-  implementation 'com.dreamlin.lottery:lottery:1.0.0'
+  implementation 'com.dreamlin.lottery:lottery:1.0.2'
 }
 ```
 

@@ -359,7 +359,7 @@ class LotteryContentView @JvmOverloads constructor(
      */
     fun startLottery(position: Int) {
         if (isLottery) return
-        val targetDegrees = mInitDegree + position * mAngle
+        val targetDegrees = mInitDegree + 360 - position * mAngle
         val animator = animate().setDuration(mDuration)
             .rotation(targetDegrees)
             .setListener(mAnimatorListener)

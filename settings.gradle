@@ -1,4 +1,3 @@
-include ':common'
 include ':lottery'
 include ':app'
 rootProject.name = "LotteryDemo"
