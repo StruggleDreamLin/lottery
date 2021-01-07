@@ -5,14 +5,16 @@ ext {
     // compile '<groupId>:<artifactId>:<libVersion>'
     groupId = 'com.dreamlin.lottery' // package name of the project
     artifactId = "lottery" // module name of the library
-    libVersion = "1.0.2"
+    libVersion = "1.0.3"
 }
 version = libVersion
 group = groupId
 //take a look at https://github.com/bintray/gradle-bintray-plugin#buildgradle
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 bintray {
-    user = 'dreamlin' // Your bintray User
-    key = 'a7f1f302e1a01561809a9e586b59232566acba19' // Defined in keystore.gradle file
+    user = properties.getProperty('bintray.user') // Your bintray User
+    key = properties.getProperty('bintray.apikey')  // Defined in keystore.gradle file
     configurations = ['archives']
     publish = true //[Default: false] Whether version should be auto published after an upload
     override = true //[Default: false] Whether to override version artifacts already published

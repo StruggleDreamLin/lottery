@@ -27,7 +27,7 @@ class LotteryContentView @JvmOverloads constructor(
 ) : View(context, attributeSet, defaultStyle) {
 
     //绘制类型
-    private var mDrawerType: DrawerType
+    private var mDrawerType: LotteryView.DrawerType
 
     //名称字体大小 sp
     private var mNameTextSize: Int
@@ -106,7 +106,10 @@ class LotteryContentView @JvmOverloads constructor(
     private var isLottery = false
 
     //监听器
-    private var mListener: LotteryListener? = null
+    private var mListener: LotteryView.LotteryListener? = null
+
+    //开奖index
+    private var position: Int = 0
 
     //动画监听
     private val mAnimatorListener: Animator.AnimatorListener
@@ -115,9 +118,9 @@ class LotteryContentView @JvmOverloads constructor(
     init {
         val oas = context.obtainStyledAttributes(attributeSet, R.styleable.LotteryView)
         mDrawerType = when (oas.getInt(R.styleable.LotteryView_lv_drawer_type, 2)) {
-            1 -> DrawerType.ONE_IMAGE
-            3 -> DrawerType.BG_IMAGE
-            else -> DrawerType.COLORS
+            1 -> LotteryView.DrawerType.ONE_IMAGE
+            3 -> LotteryView.DrawerType.BG_IMAGE
+            else -> LotteryView.DrawerType.COLORS
         }
         mBgRes = oas.getResourceId(R.styleable.LotteryView_lv_bg_res, R.mipmap.lucky_base)
         mNameTextSize =
@@ -147,12 +150,12 @@ class LotteryContentView @JvmOverloads constructor(
         mAnimatorListener = object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator?) {
                 isLottery = true
-                mListener?.onLotteryStart()
+                mListener?.onLotteryStart(position)
             }
 
             override fun onAnimationEnd(animation: Animator?) {
                 postDelayed({
-                    mListener?.onLotteryEnd()
+                    mListener?.onLotteryEnd(position)
                     rotation = 0f
                     isLottery = false
                 }, mStopDelay)
@@ -166,12 +169,12 @@ class LotteryContentView @JvmOverloads constructor(
             }
         }
         mAnimatorUpdateListener = ValueAnimator.AnimatorUpdateListener {
-            mListener?.onLottery(it)
+            mListener?.onLottery(position, it)
         }
     }
 
     @UiThread
-    fun initWith(builder: Builder) {
+    fun initWith(builder: LotteryView.Builder) {
         builder.run {
             drawerType?.let {
                 mDrawerType = it
@@ -251,14 +254,14 @@ class LotteryContentView @JvmOverloads constructor(
             val bitmap = getBitmap(resources, resId, mIconWidth)
             mBitmaps.add(index, bitmap)
         }
-        if (mDrawerType != DrawerType.COLORS) {
+        if (mDrawerType != LotteryView.DrawerType.COLORS) {
             if (mBgRes == null) {
                 throw RuntimeException("未设置背景图bgRes资源，请在布局或代码中进行设置")
             } else {
                 mBgBitmap = getBitmap(resources, mBgRes!!, w)
             }
         }
-        if (mDrawerType != DrawerType.ONE_IMAGE) {
+        if (mDrawerType != LotteryView.DrawerType.ONE_IMAGE) {
             val left = (width - mIconWidth).shr(1).toFloat()
             val right = (width + mIconWidth).shr(1).toFloat()
             val top = mRadius * mIconFactor - mIconWidth.shr(1)
@@ -285,13 +288,13 @@ class LotteryContentView @JvmOverloads constructor(
         super.onDraw(canvas)
         canvas?.run {
             when (mDrawerType) {
-                DrawerType.ONE_IMAGE -> {
+                LotteryView.DrawerType.ONE_IMAGE -> {
                     drawBitmap(mBgBitmap!!, null, bgRectF!!, mPaint)
                 }
-                DrawerType.COLORS -> {
+                LotteryView.DrawerType.COLORS -> {
                     drawContent(this)
                 }
-                DrawerType.BG_IMAGE -> {
+                LotteryView.DrawerType.BG_IMAGE -> {
                     drawBitmap(mBgBitmap!!, null, bgRectF!!, mPaint)
                     drawContent(this)
                 }
@@ -308,7 +311,7 @@ class LotteryContentView @JvmOverloads constructor(
         val centerY = height.shr(1).toFloat()
         for (i in mBitmaps.indices) {
             //画扇形
-            if (mDrawerType == DrawerType.COLORS) {
+            if (mDrawerType == LotteryView.DrawerType.COLORS) {
                 mColors?.get(i)?.let {
                     mPaint.color = it
                     val startAngle = 270f - mAngle / 2
@@ -350,7 +353,7 @@ class LotteryContentView @JvmOverloads constructor(
     /**
      * 设置动画监听器
      */
-    fun setListener(listener: LotteryListener?) {
+    fun setListener(listener: LotteryView.LotteryListener?) {
         mListener = listener
     }
 
@@ -359,6 +362,7 @@ class LotteryContentView @JvmOverloads constructor(
      */
     fun startLottery(position: Int) {
         if (isLottery) return
+        this.position = position
         val targetDegrees = mInitDegree + 360 - position * mAngle
         val animator = animate().setDuration(mDuration)
             .rotation(targetDegrees)

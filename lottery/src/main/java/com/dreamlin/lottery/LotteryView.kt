@@ -5,8 +5,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import androidx.annotation.*
+import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
+import androidx.annotation.UiThread
 import com.dreamlin.extension.view.DensityExtensions.getScreenWidth
 
 /**
@@ -117,229 +118,129 @@ class LotteryView @JvmOverloads constructor(
         contentView.startLottery(position)
     }
 
-}
+    class Builder {
+        //箭头位置
+        var arrowPos: ArrowPos? = null
 
-enum class ArrowPos {
-    TOP,
-    MIDDLE,
-    /*   BOTTOM,
-       LEFT,
-       RIGHT*/
-}
+        @DrawableRes
+        var arrowRes: Int? = null
 
-enum class DrawerType {
-    ONE_IMAGE, //全部一张图
-    COLORS,    //纯色扇形
-    BG_IMAGE   //背景图
-}
+        //绘制类型
+        var drawerType: DrawerType? = null
 
-class Builder {
-    //箭头位置
-    var arrowPos: ArrowPos? = null
+        //名称字体大小 sp
+        var nameTextSize: Int? = null
 
-    @DrawableRes
-    var arrowRes: Int? = null
+        //名称字体颜色
+        var nameTextColor: Int? = null
 
-    //绘制类型
-    var drawerType: DrawerType? = null
+        //数量字体大小
+        var numberTextSize: Int? = null
 
-    //名称字体大小 sp
-    var nameTextSize: Int? = null
+        //数量字体颜色
+        var numberTextColor: Int? = null
 
-    //名称字体颜色
-    var nameTextColor: Int? = null
+        //图标宽度 dp
+        var iconWidth: Int? = null
 
-    //数量字体大小
-    var numberTextSize: Int? = null
+        //图标高度 dp
+        var iconHeight: Int? = null
 
-    //数量字体颜色
-    var numberTextColor: Int? = null
+        //名称因子 因子代表位于半径径向的百分比
+        var nameFactor: Float? = null
+            set(value) {
+                if (value != null && value in 0f..1f) {
+                    field = value
+                }
+            }
 
-    //图标宽度 dp
-    var iconWidth: Int? = null
+        //数量因子
+        var numberFactor: Float? = null
+            set(value) {
+                if (value != null && value in 0f..1f) {
+                    field = value
+                }
+            }
 
-    //图标高度 dp
-    var iconHeight: Int? = null
+        //图标因子
+        var iconFactor: Float? = null
+            set(value) {
+                if (value != null && value in 0f..1f) {
+                    field = value
+                }
+            }
 
-    //名称因子 因子代表位于半径径向的百分比
-    var nameFactor: Float? = null
+        //背景大图 当绘制类型为ONE_IMAGE时 必须传
+        @DrawableRes
+        var bgRes: Int? = null
 
-    //数量因子
-    var numberFactor: Float? = null
+        //是否显示数量
+        var showNumber: Boolean? = true
 
-    //图标因子
-    var iconFactor: Float? = null
+        //动画周期
+        var duration: Long? = null
 
-    //背景大图 当绘制类型为ONE_IMAGE时 必须传
-    @DrawableRes
-    var bgRes: Int? = null
+        //结果停留时长
+        var stopDelay: Long? = null
 
-    //是否显示数量
-    var showNumber: Boolean? = true
+        //动画初始角度
+        var initDegree: Int? = null
 
-    //动画周期
-    var duration: Long? = null
+        //名称
+        var names: Array<String>? = null
 
-    //结果停留时长
-    var stopDelay: Long? = null
+        //数量
+        var numbers: Array<String>? = null
 
-    //动画初始角度
-    var initDegree: Int? = null
+        //图标资源ID
+        var icons: IntArray? = null
 
-    //名称
-    var names: Array<String>? = null
+        //颜色
+        var colors: IntArray? = null
 
-    //数量
-    var numbers: Array<String>? = null
+        var listener: LotteryListener? = null
 
-    //图标资源ID
-    var icons: IntArray? = null
+        /**
+         * 默认转动3-20圈
+         */
+        fun setInitTurnCount(@IntRange(from = 3, to = 20) turnCount: Int): Builder {
+            return apply {
+                initDegree = 360 * turnCount
+            }
+        }
 
-    //颜色
-    var colors: IntArray? = null
-
-    var listener: LotteryListener? = null
-
-    fun setArrowPos(pos: ArrowPos): Builder {
-        return apply {
-            arrowPos = pos
+        fun setListener(listener: LotteryListener?): Builder {
+            return apply {
+                this.listener = listener
+            }
         }
     }
 
-    fun setArrowRes(@DrawableRes res: Int): Builder {
-        return apply {
-            arrowRes = res
-        }
+    enum class ArrowPos {
+        TOP,
+        MIDDLE,
+        /*   BOTTOM,
+           LEFT,
+           RIGHT*/
     }
 
-    fun setDrawerType(type: DrawerType): Builder {
-        return apply {
-            drawerType = type
-        }
+    enum class DrawerType {
+        ONE_IMAGE, //全部一张图
+        COLORS,    //纯色扇形
+        BG_IMAGE   //背景图
     }
 
-    fun setNameTextSize(sp: Int): Builder {
-        return apply {
-            nameTextSize = sp
-        }
+    interface LotteryListener {
+        /**
+         * 当开始arrowImage被点击
+         */
+        fun onStartClicked(startImageView: ImageView)
+
+        fun onLotteryStart(position: Int)
+
+        fun onLottery(position: Int, animator: ValueAnimator)
+
+        fun onLotteryEnd(position: Int)
     }
 
-    fun setNameTextColor(@ColorInt color: Int): Builder {
-        return apply {
-            nameTextColor = color
-        }
-    }
-
-    fun setNumberTextSize(sp: Int): Builder {
-        return apply {
-            numberTextSize = sp
-        }
-    }
-
-    fun setNumberTextColor(@ColorInt color: Int): Builder {
-        return apply {
-            numberTextColor = color
-        }
-    }
-
-    fun setIconWidth(dp: Int): Builder {
-        return apply {
-            iconWidth = dp
-        }
-    }
-
-
-    fun setIconHeight(dp: Int): Builder {
-        return apply {
-            iconHeight = dp
-        }
-    }
-
-    fun setBgRes(@DrawableRes res: Int): Builder {
-        return apply {
-            bgRes = res
-        }
-    }
-
-    fun setNameFactor(@FloatRange(from = 0.0, to = 1.0) factor: Float): Builder {
-        return apply {
-            nameFactor = factor
-        }
-    }
-
-    fun setNumberFactor(@FloatRange(from = 0.0, to = 1.0) factor: Float): Builder {
-        return apply {
-            numberFactor = factor
-        }
-    }
-
-    fun setIconFactor(@FloatRange(from = 0.0, to = 1.0) factor: Float): Builder {
-        return apply {
-            iconFactor = factor
-        }
-    }
-
-    fun setNames(array: Array<String>): Builder {
-        return apply {
-            names = array
-        }
-    }
-
-    fun setNumbers(array: Array<String>): Builder {
-        return apply {
-            numbers = array
-        }
-    }
-
-    fun setIcons(array: IntArray): Builder {
-        return apply {
-            icons = array
-        }
-    }
-
-    fun setColors(colors: IntArray): Builder {
-        return apply {
-            this.colors = colors
-        }
-    }
-
-    fun setShowNumber(show: Boolean): Builder {
-        return apply {
-            showNumber = show
-        }
-    }
-
-    fun setDuration(duration: Long): Builder {
-        return apply {
-            this.duration = duration
-        }
-    }
-
-    /**
-     * 默认转动3-20圈
-     */
-    fun setInitTurnCount(@IntRange(from = 3, to = 20) turnCount: Int): Builder {
-        return apply {
-            initDegree = 360 * turnCount
-        }
-    }
-
-    fun setListener(listener: LotteryListener?): Builder {
-        return apply {
-            this.listener = listener
-        }
-    }
-}
-
-interface LotteryListener {
-    /**
-     * 当开始arrowImage被点击
-     */
-    fun onStartClicked(startImageView: ImageView)
-
-    fun onLotteryStart()
-
-    fun onLottery(animator: ValueAnimator)
-
-    fun onLotteryEnd()
 }

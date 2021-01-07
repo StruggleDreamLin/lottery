@@ -1,15 +1,15 @@
 # LotteryView
-a flexible android lottery view
+一款可灵活配置的Android 抽奖View
 
-### [**中文版**](./README-ZH-CN.md)
+### [**English**](./README.md)
 
-## Results show
+## 效果
 
 [![smyaMn.png](https://s3.ax1x.com/2021/01/07/smyaMn.png)](https://imgchr.com/i/smyaMn)
 
-## How to use
+## 使用
 
-### Layout
+- 布局
 
 ```xml
 <com.dreamlin.lottery.LotteryView
@@ -23,9 +23,10 @@ a flexible android lottery view
     app:lv_drawer_type="colors" />
 ```
 
-### Init
+### 初始化
 
-- with kotlin
+- Kotlin
+
 ```kotlin
 val lotteryView = findViewById<LotteryView>(R.id.lotteryView)
 val size = 6
@@ -65,7 +66,7 @@ val builder = LotteryView.Builder().apply {
 lotteryView.initWith(builder)
 ```
 
-- with java
+- Java
 
 ```java
 final LotteryView lotteryView = rootView.findViewById(R.id.lotteryView);
@@ -89,6 +90,7 @@ builder.setNames(names);
 builder.setIcons(icons);
 builder.setNumbers(numbers);
 builder.setColors(colors);
+//初始化LotteryView with configs
 lotteryView.initWith(builder);
 final Random random = new Random();
 lotteryView.setListener(new LotteryView.LotteryListener() {
@@ -116,9 +118,9 @@ lotteryView.setListener(new LotteryView.LotteryListener() {
 
 
 
-## Download
+## 引用
 
-**Attention**:This library is using kotlin to write,so make sure you are configure kotlin in your project.(How to configure kotlin with IDE; you can configure that **Tools** ==> **kotlin** ==>**configure kotlin in project** on Android Studio 4.0+)
+注意:该View使用Kotlin语言编写，你可以通过IDE在你的工程里配置Kotlin依赖; **Tools** ==> **kotlin** ==>**configure kotlin in project** on Android Studio 4.0+)
 
 ```groovy
 dependencies {
@@ -128,31 +130,33 @@ dependencies {
 
 
 
-## Attributies
+## 属性
 
 | Name                | Value                       | Description                                                  |
 | ------------------- | --------------------------- | ------------------------------------------------------------ |
-| lv_drawer_type      | one_image\|colors\|bg_image | There are three draw types,the type one_image means that only one image contains everyting,the type colors means the item background is a color and you can appoint it for every item,the type bg_image means the view backgroud is a full image. |
-| lv_arrow_pos        | top\|middle                 | The arrow pos center in view or align to top.                |
-| lv_arrow_res        | R.mipmap.arrow              | The drawable res for arrow .                                 |
-| lv_bg_res           | R.mipmap.lucky_base         | The drawable res for bg_image .If **lv_drawer_type** is **one_image** or **bg_image**,you have to appoint it. |
-| lv_name_textSize    | 15sp                        | The item name textSize.                                      |
-| lv_number_textSize  | 13sp                        | The item number textSize.                                    |
-| lv_name_textColor   | @color/white                | The item name textColor.                                     |
-| lv_number_textColor | @color/black                | The item number textColor.                                   |
-| lv_icon_width       | 44dp                        | The item icon width.                                         |
-| lv_icon_height      | 54dp                        | The item icon height.                                        |
-| lv_name_factor      | 0.16 (@FloatRange(0,1f))    | The name radial factor on radius.(from top to center of circle) |
-| lv_number_factor    | 0.62 (@FloatRange(0,1f))    | The number radial factor on radius.(from top to center of circle) |
-| lv_icon_factor      | 0.4 (@FloatRange(0,1f))     | The icon radial factor on radius.(from top to center of circle) |
-| lv_show_number      | true                        | Wheather to show numbers.                                    |
-| lv_duration         | 2500L                       | The duration for lottery animation.                          |
-| lv_stop_delay       | 1000L                       | The callback delay when lottery was end.                     |
-| lv_init_turn_count  | 4                           | That means lottery animation will turn the four laps at least. |
+| lv_drawer_type      | one_image\|colors\|bg_image | 支持三种类型，one_image 代表 一张图包含所有内容；colors 代表背景为纯色，可以为每一种奖品指定不同的扇形颜色背景；bg_image 代表背景为图片，图片会缩放铺满整个LotteryView。 |
+| lv_arrow_pos        | top\|middle                 | 指针位置，middle 代表正中心，top代表上方中间位置。           |
+| lv_arrow_res        | R.mipmap.arrow              | 指针资源。                                                   |
+| lv_bg_res           | R.mipmap.lucky_base         | 背景图资源，当drawer_type为 **one_image** 和 **bg_image**时必须指定，否则会抛出异常。 |
+| lv_name_textSize    | 15sp                        | 奖品名称字体大小。                                           |
+| lv_number_textSize  | 13sp                        | 奖品数量字体大小。                                           |
+| lv_name_textColor   | @color/white                | 奖品名称字体颜色。                                           |
+| lv_number_textColor | @color/black                | 奖品数量字体颜色。                                           |
+| lv_icon_width       | 44dp                        | 奖品图标宽度。                                               |
+| lv_icon_height      | 54dp                        | 奖品图标高度                                                 |
+| lv_name_factor      | 0.16 (@FloatRange(0,1f))    | 奖品名称 径向百分比。                                        |
+| lv_number_factor    | 0.62 (@FloatRange(0,1f))    | 奖品数量 径向百分比。                                        |
+| lv_icon_factor      | 0.4 (@FloatRange(0,1f))     | 奖品图标 径向百分比。                                        |
+| lv_show_number      | true                        | 是否显示数量。                                               |
+| lv_duration         | 2500L                       | 开奖动画周期。                                               |
+| lv_stop_delay       | 1000L                       | 结果展示停留时长。                                           |
+| lv_init_turn_count  | 4                           | 动画至少旋转几圈。                                           |
 
+关于factor:
 
+[![smNZXF.png](https://s3.ax1x.com/2021/01/07/smNZXF.png)](https://imgchr.com/i/smNZXF)
 
-- **Thanks for your star&issues.**
+- **欢迎 star&issues.**
 
 
 

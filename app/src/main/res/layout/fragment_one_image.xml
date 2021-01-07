@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    tools:menu="@menu/list">
+    android:background="@android:color/white"
+    tools:context=".MainActivity">
 
     <com.dreamlin.lottery.LotteryView
         android:id="@+id/lotteryView"
@@ -16,7 +15,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lv_arrow_res="@mipmap/icon_arrow"
-        app:lv_drawer_type="colors"
+        app:lv_bg_res="@mipmap/lucky_base"
+        app:lv_drawer_type="one_image"
         app:lv_icon_height="54dp"
         app:lv_icon_width="44dp" />
 
