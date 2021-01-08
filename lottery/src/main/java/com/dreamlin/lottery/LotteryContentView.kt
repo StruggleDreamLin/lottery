@@ -234,8 +234,34 @@ class LotteryContentView @JvmOverloads constructor(
             }
             mListener = listener
         }
+        decodeRes()
         onInit(width, height)
         invalidate()
+    }
+
+    /**
+     * 只在初始化时Decode一次
+     */
+    private fun decodeRes() {
+        if (mBitmaps.isNotEmpty()) {
+            mBitmaps.forEach {
+                it?.recycle()
+            }
+            mBitmaps.clear()
+        }
+
+        mIcons?.forEachIndexed { index, resId ->
+            val bitmap = getBitmap(resources, resId, mIconWidth)
+            mBitmaps.add(index, bitmap)
+        }
+        if (mDrawerType != LotteryView.DrawerType.COLORS) {
+            mBgBitmap?.recycle()
+            if (mBgRes == null) {
+                throw RuntimeException("未设置背景图bgRes资源，请在布局或代码中进行设置")
+            } else {
+                mBgBitmap = getBitmap(resources, mBgRes!!, width)
+            }
+        }
     }
 
     private fun onInit(w: Int, h: Int) {
@@ -249,18 +275,6 @@ class LotteryContentView @JvmOverloads constructor(
             mIconWidth = (0.3f * mRadius).toInt()
         }
 
-        mBitmaps.clear()
-        mIcons?.forEachIndexed { index, resId ->
-            val bitmap = getBitmap(resources, resId, mIconWidth)
-            mBitmaps.add(index, bitmap)
-        }
-        if (mDrawerType != LotteryView.DrawerType.COLORS) {
-            if (mBgRes == null) {
-                throw RuntimeException("未设置背景图bgRes资源，请在布局或代码中进行设置")
-            } else {
-                mBgBitmap = getBitmap(resources, mBgRes!!, w)
-            }
-        }
         if (mDrawerType != LotteryView.DrawerType.ONE_IMAGE) {
             val left = (width - mIconWidth).shr(1).toFloat()
             val right = (width + mIconWidth).shr(1).toFloat()

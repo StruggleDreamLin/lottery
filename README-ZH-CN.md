@@ -124,7 +124,7 @@ lotteryView.setListener(new LotteryView.LotteryListener() {
 
 ```groovy
 dependencies {
-  implementation 'com.dreamlin.lottery:lottery:1.0.3'
+  implementation 'com.dreamlin.lottery:lottery:1.0.4'
 }
 ```
 
